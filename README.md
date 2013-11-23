@@ -10,3 +10,6 @@ The "framework" itself consists of 2 files:
 /js/apps.js and /apps.php
 
 apps.php contains a set of functions for converting normal CommenJS modules into something that can be used in the browser.
+
+
+Demo here: http://vonhofmeister.com/appcontainer/
