@@ -24,9 +24,15 @@
             margin-bottom: 35px;
         }
 
-        .source {
+        .source, .mode {
             color: #0f2f72;
             font-weight: bold;
+            display: block;
+            margin:15 0;
+        }
+
+        .source {
+            margin-bottom: 35px;
         }
 
         #apps {
@@ -54,6 +60,16 @@
         </p>
 
         <a class="source" href="https://github.com/hofmeister/appcontainer">View source on GitHub</a>
+
+
+        <b>Try out the different ways of serving up this page:</b>
+
+        <a class="mode" href="./">JIT compiled, seperate sources</a>
+
+        <a class="mode" href="?bundle">JIT compiled, bundled source</a>
+
+        <a class="mode" href="?bundle&minified">Pre-compiled, bundled, minified</a>
+
     </div>
 
     <div id="apps">
