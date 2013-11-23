@@ -1,11 +1,19 @@
+/**
+ * The JS part of the container framework.
+ */
 (function() {
 
-	var globalModules = {};
+	var globalModules = {},
+		apps = {};
 
-
-
-	var apps = {};
 	window.Apps = {
+
+		/**
+		 * Register a new app
+		 * @param App id
+		 * @param Root app CommonJS module function
+		 * @returns App definition
+		 */
 		register: function(id, bootstrapFunc) {
 
 			if (apps[id]) {
@@ -15,8 +23,14 @@
 			var modules = {},
 				views = {};
 
+			/**
+			 * App definition instance
+			 */
 			var app =  {
 				id: id,
+				/**
+				 * Instantiate app instance
+				 */
 				init: function( ) {
 					var module = {
 						id: id,
@@ -30,6 +44,12 @@
 					return new appFunc();
 
 				},
+				/**
+				 * Register or instantiate module from this app
+				 * @param id
+				 * @param module
+				 * @returns {*}
+				 */
 				module: function(id, module) {
 					if (module) {
 						modules[id] = module;
@@ -55,6 +75,11 @@
 
 					return module.exports;
 				},
+				/**
+				 * Instantiate singleton module (e.g. global module)
+				 * @param id
+				 * @returns {*}
+				 */
 				singleton: function ( id ) {
 					if (globalModules[id]) {
 						return globalModules[id];
@@ -77,6 +102,12 @@
 					return globalModules[id];
 
 				},
+				/**
+				 * Get or set view on this app
+				 * @param id
+				 * @param view
+				 * @returns {*}
+				 */
 				view: function(id, view) {
 					if (view) {
 						views[id] = view;
@@ -94,10 +125,18 @@
 				}
 			};
 
+			Object.freeze(app); //Lock it down, no changes should be made after this point.
+
 			apps[id] = app;
 
 			return app;
 		},
+		/**
+		 * Instantiate app component
+		 * @param appId
+		 * @param component
+		 * @returns {component}
+		 */
 		app: function( appId, component ) {
 			if (!apps[appId]) {
 				throw "App not found: " + appId ;
@@ -114,6 +153,9 @@
 			return new component();
 		},
 
+		/**
+		 * Instantiate all apps and render the ones that should be.
+		 */
 		init: function() {
 			for(var appId in apps) {
 				var app = apps[appId];
@@ -140,6 +182,7 @@
 		}
 	};
 
+	//Allow no changes to Apps
 	Object.freeze(Apps);
 })();
 

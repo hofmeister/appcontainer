@@ -1,7 +1,14 @@
+/**
+ * Provides AngularJS to other apps
+ * @constructor
+ */
 function AngularEngine() {
 	var angular = require('angular',true);
 
 	return {
+		/**
+		 * Creates a angular component that can be used to add controllers and compile templates
+		 */
 		component: function( ) {
 
 			var compiler = null;
