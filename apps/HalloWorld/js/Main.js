@@ -15,7 +15,7 @@ function HalloWorldMain( ) {
 			return angularComponent.$compile( module.view('halloworld.html') );
 		},
 		url: '.*',
-		container: 'body'
+		container: '#apps'
 	}
 }
 

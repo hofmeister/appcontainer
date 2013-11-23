@@ -128,7 +128,7 @@
 							var urlRx = new RegExp(component.url);
 
 							if (urlRx.test(location.hash.substr(1))) {
-								var container = component.container || 'body';
+								var container = component.container ? component.container : 'body';
 								var domElm = document.querySelector(container);
 								var appDom = component.render();
 								domElm.appendChild(appDom);
