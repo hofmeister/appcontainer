@@ -40,19 +40,32 @@ function compileApp( $appId ) {
 
     $bootStrapContent = readCommonJs($bootStrap);
     ?>
-    (function() {
+(function() { //Defines <?=$appId?> app
+
+    /**
+     * App scoped require function
+     * @param moduleId the id of the app module
+     * @param singleton if true uses global instance of module
+     */
     function require( moduleId, singleton ) {
-    if (singleton) {
-    return thisApp.singleton( moduleId );
-    }
-    return thisApp.module( moduleId);
-    }
-
-    function app( appId, version ) {
-    return Apps.app( appId, version );
+        if (singleton) {
+            return thisApp.singleton( moduleId );
+        }
+        return thisApp.module( moduleId);
     }
 
+
+    /**
+     * Loads component from other app.
+     */
+    function app( appId, component ) {
+        return Apps.app( appId, component );
+    }
+
+    //Register app in the container
     var thisApp = Apps.register('<?=$appId?>',<?=$bootStrapContent?>);
+
+    //Register modules in app:
     <?
 
     //Read modules
@@ -62,18 +75,26 @@ function compileApp( $appId ) {
         $contents = wrapInCommonJS($contents);
 
         ?>
-        thisApp.module('<?=$moduleId?>',<?=$contents?>);
+
+    thisApp.module('<?=$moduleId?>',<?=$contents?>);
+
+    //Register views (if any) in app:
+
     <?
     });
 
     //Read views
     traverse($viewPath, function($filename, $contents) {
 
-        ?>thisApp.view('<?=$filename?>','<?=urlencode($contents)?>');<?
+        ?>thisApp.view('<?=$filename?>','<?=urlencode($contents)?>');
+<?
     });
     ?>
+
+    //Freeze the app - no more changes can be done to this.
     Object.freeze(thisApp);
-    })();
+
+})();
 <?
     return ob_get_clean();
 }
